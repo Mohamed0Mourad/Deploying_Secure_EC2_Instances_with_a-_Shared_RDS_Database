@@ -1,11 +1,31 @@
-resource "aws_security_group" "app_sg" {
-  name        = "app_security_group"
-  description = "Allow web traffic"
-  vpc_id      = aws_vpc.app_vpc.id
+resource "aws_security_group" "WebTrafficSG" {
+  vpc_id = aws_vpc.AppVPC.id
+  name   = "WebTrafficSG"
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
   ingress {
     from_port   = 80
     to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 3306
+    to_port     = 3306
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -18,6 +38,6 @@ resource "aws_security_group" "app_sg" {
   }
 
   tags = {
-    Name = "AppSecurityGroup"
+    Name = "WebTrafficSG"
   }
 }
